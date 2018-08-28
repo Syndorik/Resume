@@ -1,0 +1,12 @@
+FROM python:3.4-alpine
+ADD . /code
+WORKDIR /code
+RUN echo "ipv6" >> /etc/modules
+RUN apk upgrade --update
+RUN apk add build-base
+RUN apk add --no-cache freetype libpng libjpeg-turbo zlib freetype-dev libpng-dev libjpeg-turbo-dev zlib-dev
+RUN pip install -r requirements.txt
+RUN pip3 install pillow
+RUN pip3 install connexion
+ENTRYPOINT ["python"]
+CMD ["clientphoto_service.py"]

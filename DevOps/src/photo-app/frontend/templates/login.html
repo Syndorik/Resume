@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block title %}Index{% endblock %}
+{% block head %}
+{{ super() }}
+<style type="text/css">
+  .important { color: #336699; }
+</style>
+{% endblock %}
+{% block content %}
+<p class="important">
+  Welcome to the Photo Application running on OpenStack
+</p>
+<div id="contact-area">
+  <a href="/register"> Create photographer </a>
+  <br>
+  <form action="/identification" method="post">
+    <div>
+      {% if msg %}
+      <label> {{ msg }} </label>
+      {% endif %}
+      <label for="displayname">Display Name :</label>
+      <input type="test" name="display_name" id="display_name" />
+    </div>
+    <div class="button">
+      <button type="submit">Login</button>
+    </div>
+  </form>
+</div>
+{% endblock %}

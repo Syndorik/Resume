@@ -1,0 +1,223 @@
+heat_template_version: ocata
+
+description: template to deploy Nginx and a bastion host
+
+parameters:
+  key:
+    type: string
+    description: Key Name
+
+resources:
+
+  bastion_security_group:
+    type: OS::Neutron::SecurityGroup
+    properties:
+      description: "Security group bastion"
+      rules:
+        - remote_ip_prefix: 0.0.0.0/0
+          protocol: tcp
+          port_range_min: 22
+          port_range_max: 22
+
+  vm_security_group:
+    type: OS::Neutron::SecurityGroup
+    properties:
+      description: "security group for VMs"
+      rules:
+        - remote_ip_prefix: 192.168.2.0/24
+          protocol: tcp
+        - remote_ip_prefix: 192.168.2.0/24
+          protocol: udp
+        - remote_ip_prefix: 192.168.2.0/24
+          protocol: icmp
+
+  private_net:
+    type: OS::Neutron::Net
+    properties:
+      name: "private_net"
+
+  private_subnet:
+    type: OS::Neutron::Subnet
+    properties:
+      network_id: { get_resource: private_net }
+      cidr: "192.168.2.0/24"
+      dns_nameservers: [ "192.44.75.10" ]
+      ip_version: 4
+      name: "private_subnet"
+      allocation_pools:
+        - start: 192.168.2.125
+          end: 192.168.2.254
+
+  gateway_router:
+    type: OS::Neutron::Router
+    properties:
+      external_gateway_info:
+        network: external
+      name: "gateway_router"
+
+  gateway_router_interface:
+    type: OS::Neutron::RouterInterface
+    properties:
+      router_id: { get_resource: gateway_router}
+      subnet_id: { get_resource: private_subnet}
+
+  mgostck1_port:
+    type: OS::Neutron::Port
+    properties:
+      network_id: { get_resource: private_net}
+      security_groups: [get_resource: vm_security_group]
+      fixed_ips: [{"subnet": {get_resource : private_subnet}, "ip_address": 192.168.2.6}]
+
+  mgostck2_port:
+   type: OS::Neutron::Port
+   properties:
+     network_id: { get_resource: private_net}
+     security_groups: [get_resource: vm_security_group]
+     fixed_ips: [{"subnet": {get_resource : private_subnet}, "ip_address": 192.168.2.7}]
+
+  mgostck3_port:
+    type: OS::Neutron::Port
+    properties:
+      network_id: { get_resource: private_net}
+      security_groups: [get_resource: vm_security_group]
+      fixed_ips: [{"subnet": {get_resource : private_subnet}, "ip_address": 192.168.2.8}]
+
+  mgostcktest_port:
+    type: OS::Neutron::Port
+    properties:
+      network_id: { get_resource: private_net}
+      security_groups: [get_resource: vm_security_group]
+      fixed_ips: [{"subnet": {get_resource : private_subnet}, "ip_address": 192.168.2.5}]
+
+  bastion_port:
+    type: OS::Neutron::Port
+    properties:
+      network_id: { get_resource: private_net}
+      security_groups: [get_resource: bastion_security_group]
+      fixed_ips:
+        - subnet_id: { get_resource: private_subnet}
+
+  floating_ip_bastion:
+    type: OS::Neutron::FloatingIP
+    properties:
+      floating_network: external
+
+  association_bastion:
+    type: OS::Neutron::FloatingIPAssociation
+    properties:
+      floatingip_id: { get_resource: floating_ip_bastion }
+      port_id: { get_resource: bastion_port }
+
+  mgostck1:
+    type: OS::Nova::Server
+    properties:
+      name: mgostck1
+      image: Ubuntu_16.04.latest
+      flavor: U-small
+      key_name: { get_param: key}
+      networks:
+        - port: { get_resource: mgostck1_port }
+      user_data: |
+        #!/bin/bash
+        export IP=`ifconfig ens3 | grep 'inet addr:' | cut -d: -f2 | awk '{ print $1}'`
+        export HOSTNAME=`hostname`
+        tee -a /etc/hosts <<EOF
+        $IP $HOSTNAME
+        EOF
+        echo 'Acquire::http::Proxy "http://apt-cacher-01.priv.enst-bretagne.fr:3142";' > /etc/apt/apt.conf.d/01proxy
+        apt-get -y update
+        apt-get -y upgrade
+        apt-get install -y python
+        
+  mgostck2:
+    type: OS::Nova::Server
+    properties:
+      name: mgostcktest
+      image: Ubuntu_16.04.latest
+      flavor: U-small
+      key_name: { get_param: key}
+      networks:
+        - port: { get_resource: mgostck2_port }
+      user_data: |
+        #!/bin/bash
+        export IP=`ifconfig ens3 | grep 'inet addr:' | cut -d: -f2 | awk '{ print $1}'`
+        export HOSTNAME=`hostname`
+        tee -a /etc/hosts <<EOF
+        $IP $HOSTNAME
+        EOF
+        echo 'Acquire::http::Proxy "http://apt-cacher-01.priv.enst-bretagne.fr:3142";' > /etc/apt/apt.conf.d/01proxy
+        apt-get -y update
+        apt-get -y upgrade
+        apt-get install -y python
+
+  mgostck3:
+    type: OS::Nova::Server
+    properties:
+      name: mgostck3
+      image: Ubuntu_16.04.latest
+      flavor: U-small
+      key_name: { get_param: key}
+      networks:
+        - port: { get_resource: mgostck3_port }
+      user_data: |
+        #!/bin/bash
+        export IP=`ifconfig ens3 | grep 'inet addr:' | cut -d: -f2 | awk '{ print $1}'`
+        export HOSTNAME=`hostname`
+        tee -a /etc/hosts <<EOF
+        $IP $HOSTNAMEle named it repmongo-infra.yaml) and execute the appropriate command to create it (use REPMONGO for the na
+        EOF
+        echo 'Acquire::http::Proxy "http://apt-cacher-01.priv.enst-bretagne.fr:3142";' > /etc/apt/apt.conf.d/01proxy
+        apt-get -y update
+        apt-get -y upgrade
+        apt-get install -y python
+
+  mgostcktest:
+    type: OS::Nova::Server
+    properties:
+      name: mgostcktest
+      image: Ubuntu_16.04.latest
+      flavor: U-small
+      key_name: { get_param: key}
+      networks:
+        - port: { get_resource: mgostcktest_port }
+      user_data: |
+        #!/bin/bash
+        export IP=`ifconfig ens3 | grep 'inet addr:' | cut -d: -f2 | awk '{ print $1}'`
+        export HOSTNAME=`hostname`
+        tee -a /etc/hosts <<EOF
+        $IP $HOSTNAME
+        EOF
+        echo 'Acquire::http::Proxy "http://apt-cacher-01.priv.enst-bretagne.fr:3142";' > /etc/apt/apt.conf.d/01proxy
+        apt-get -y update
+        apt-get -y upgrade
+        apt-get install -y python
+
+  bastion:
+    type: OS::Nova::Server
+    properties:
+      name: BASTIIOOON
+      image: Ubuntu_16.04.latest
+      flavor: U-small
+      key_name: { get_param: key}
+      networks:
+        - port: { get_resource: bastion_port }
+      user_data: |
+        #!/bin/bash
+        export IP=`ifconfig ens3 | grep 'inet addr:' | cut -d: -f2 | awk '{ print $1}'`
+        export HOSTNAME=`hostname`
+        tee -a /etc/hosts <<EOF
+        $IP $HOSTNAME
+        EOF
+        echo 'Acquire::http::Proxy "http://apt-cacher-01.priv.enst-bretagne.fr:3142";' > /etc/apt/apt.conf.d/01proxy
+        apt-get -y update
+        apt-get -y upgrade
+        apt-get install -y python
+        sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 93C4A3FD7BB9C367
+        echo "deb http://ppa.launchpad.net/ansible/ansible/ubuntu xenial main" \
+        | sudo tee /etc/apt/sources.list.d/ansible-ubuntu-ansible-xenial.list
+        sudo apt-get update
+        sudo apt-get install ansible
+        echo "mgostck1_ansible_host = 192.168.2.6
+        mgostck2_ansible_host = 192.168.2.7
+        mgostck3_ansible_host = 192.168.2.8
+        mgostcktest_ansible_host = 192.168.2.5" | tee ~ubuntu/inventory

@@ -1,0 +1,11 @@
+# where to download the docker deb file
+docker_deb_url: http://www.cloud.rennes.enst-bretagne.fr/docker-ce_17.06.2~ce-0~ubuntu_amd64.deb
+
+# pin compose version
+docker_compose_version: 1.16.1
+
+# compose path
+docker_compose_bin: /usr/local/bin/docker-compose
+
+# install compose by default
+install_docker_compose: True

@@ -1,0 +1,14 @@
+---
+- hosts: docker
+  vars:
+    dockerhub_mirror_url: https://dh-mirror.cloud.rennes.enst-bretagne.fr:5000
+    install_docker_compose: true
+  roles:
+    - role: docker
+    - role: add-root-crt
+  tasks:
+    - name: Restart docker
+      become: True
+      service:
+        name: docker
+        state: restarted

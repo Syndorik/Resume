@@ -1,0 +1,72 @@
+﻿[Créer le stack sur openstack]
+
+stack create --template photoapp-infra.yaml --parameter key=MYKEY PhotoApp
+
+
+[Sur Bastion]
+
+git clone https://redmine-df.telecom-bretagne.eu/git/e504-f17-g17
+cp e504-f17-g17/create_machines/mykey ~/mykey
+chmod og-rwx mykey
+chmod u-x mykey
+sudo apt install ansible
+ansible-galaxy install vanoise.mongo-elu504
+
+
+
+
+[installer ansible]
+
+ansible-playbook -i inventory -u ubuntu --private-key ~/mykey e504-f17-g17/ansible-docker/docker-swarm.yml
+
+
+
+[installer mongodb]
+
+ansible-playbook -s -i inventory -u ubuntu --private-key ~/mykey ./e504-f17-g17/create_machines/photoapp-playbook.yaml
+
+
+
+[Si docker deconne]
+docker rm $(docker ps -a -q)
+docker rmi $(docker images -q)
+
+
+
+[Sur la machine créer les images docker-compose]
+
+sudo docker-compose -f docker-compose-g17.yml up
+docker images (pour verifier l'existence)
+docker tag 
+[IMAGE ID] + registry.cloud.rennes.enst-bretagne.fr:5000/myphotographer_g17 (pour chacun)
+docker push (push les images)
+
+
+
+[Se connecter sur bastion puis sur le front end 192.168.2.129]
+
+git clone https://redmine-df.telecom-bretagne.eu/git/e504-f17-g17
+docker stack deploy --compose-file ./e504-f17-g17/src/photo-app/frontend/docker-compose-g17.yml PHOTO
+
+
+
+[se connecter sur bastion puis sur monh
+use clientPhoto
+
+db.createUser( { user: "user",
+                 pwd: "user",
+                 roles: [ { role: "dbOwner", db: "clientPhoto" },
+                          ] } )
+
+use photographers
+
+db.createUser( { user: "user",
+                 pwd: "user",
+                 roles: [ { role: "dbOwner", db: "photographers" },
+                          ] } )
+
+alice = {"name": "alice", "interest": ["landscape"]}
+db.photographers.insert(alice)
+db.clientPhoto.insert(alice)
+
+

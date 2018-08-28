@@ -1,0 +1,14 @@
+version: '3.0'
+services:
+  web:
+    image: registry.cloud.rennes.enst-bretagne.fr:5000/myweb_17
+    build: .
+    ports:
+     - "8017:8017"
+  redis:
+    image: registry.cloud.rennes.enst-bretagne.fr:5000/myredis_17
+    build:
+      context: ./redis
+      dockerfile: RedisDockerfile
+    ports:
+      - "6397:6397"

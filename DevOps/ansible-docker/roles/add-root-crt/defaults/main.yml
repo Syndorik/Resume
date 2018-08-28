@@ -1,0 +1,8 @@
+---
+# ******************* IMPORTANT ******
+# Use /usr/local/share/ca-certificates and not
+# /usr/share/ca-certificates !!!! only /usr/local works. (I have no
+# idea why).
+
+cert_directory: /usr/local/share/ca-certificates/school
+root_ca_crt_url: http://www.cloud.rennes.enst-bretagne.fr/root-ca.crt

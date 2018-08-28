@@ -1,0 +1,17 @@
+---
+- name: Create cert directory
+  become: True
+  file: "path={{ cert_directory }} state=directory mode=0755"
+
+  
+- name: Get the root CA certificate
+  become: True
+  get_url:
+    url: "{{ root_ca_crt_url }}"
+    dest: '{{ cert_directory }}'
+    force: true
+    mode: "0644"
+
+- name: Run update-ca-certificates
+  become: True
+  command: update-ca-certificates

@@ -1,0 +1,94 @@
+---
+# Somme commands from the role at
+# https://github.com/angstwad/docker.ubuntu
+
+# In my understanding, it is now (i.e., as of 16.04) better to use the
+# overlay2 storage driver, which does not require extra linux-image
+# packages
+- name: Update cache if needed
+  become: True
+  apt:
+    update_cache: yes
+    cache_valid_time: 3600
+
+- name: Install the docker package.
+  become: True
+  apt:
+    deb: "{{ docker_deb_url }}"
+
+- name: Add users to the docker group
+  become: True
+  user:
+    name: "{{ ansible_user | default(lookup('env', 'USER'), True) }}"
+    groups: docker
+    append: yes
+
+- name: Install docker compose (curl)
+  become: True
+  get_url:
+    url: 'http://www.cloud.rennes.enst-bretagne.fr/docker-compose-Linux-x86_64'
+    dest: '{{ docker_compose_bin }}'
+    force: true
+    mode: '555'
+  when: install_docker_compose|bool==True
+
+- name: Enable the Docker daemon as a service and start it.
+  service:
+    name: docker
+    state: started
+    enabled: yes
+
+- name: Configure the dockerhub mirror if dockerhub_mirror_url is set
+  become: True
+  template:
+    src: daemon.json
+    dest: /etc/docker/daemon.json
+    group: docker
+  notify: reload docker
+  when: dockerhub_mirror_url is defined
+
+- name: Declare the first node as the "main" manager and set it as a fact.
+  set_fact:
+    first_manager_hostname: "groups['docker_swarm_manager'][0]"
+  when: "inventory_hostname == groups['docker'][0]"
+
+- name: Declare the address of the first Swarm manager as a fact.
+  set_fact:
+    first_manager_address: "{{ ansible_default_ipv4['address'] }}"
+  when: "inventory_hostname == groups['docker'][0]"
+
+- name: Distribute the fact containing address of the first Swarm manager.
+  set_fact:
+    first_manager_address: "{{hostvars[groups['docker'][0]]['first_manager_address'] }}"
+  when: "inventory_hostname != groups['docker'][0]"
+
+- name: Register docker info.
+  become: True
+  shell: docker info
+  changed_when: False
+  register: docker_info
+
+- name: Init "Swarm Mode" on the first manager.
+  become: True
+  shell: docker swarm init --advertise-addr "{{ ansible_default_ipv4['address'] }}"
+  when: "docker_info.stdout.find('Swarm: active') == -1
+    and inventory_hostname == groups['docker'][0]"
+
+- name: Get the manager join-token.
+  become: True
+  shell: docker swarm join-token -q manager
+  changed_when: False
+  register: docker_manager_token
+  delegate_to: "{{ groups['docker'][0] }}"
+  delegate_facts: True
+  when: "inventory_hostname != groups['docker'][0]"
+
+- name: Join the pending Swarm manager nodes.
+  become: True
+  shell: docker swarm join
+        --token "{{ docker_manager_token.stdout }}"
+        {{ first_manager_address }}
+  changed_when: False
+  when: "docker_info.stdout.find('Swarm: active') == -1
+    and docker_info.stdout.find('Swarm: pending') == -1
+    and inventory_hostname != groups['docker'][0]"

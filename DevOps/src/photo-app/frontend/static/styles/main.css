@@ -1,0 +1,56 @@
+html, body {
+    overflow:hidden;
+    margin:0px;
+    padding:0px;
+    background: url(images/background.jpg) no-repeat;
+    background-size: cover;
+}
+body { font-family: trebuchet ms,arial,tahoma,verdana,sans-serif;}
+code {font-size:1em;}
+#left { 
+    position:fixed;
+    overflow:auto;
+    left:0px;
+    width:250px;
+    bottom:0px;
+    top:0px;
+    border:solid 1px;
+    /*    font-size:90%;*/
+    text-align: center;
+    line-height: 50pt;
+    font-size: 1.5em;
+}
+#principal { 
+    position:fixed;
+    overflow:auto;
+    left:270px;
+    width:calc(100% - 250px);
+    bottom:0px;
+    top:0px;
+    border:solid 0px;
+}
+
+.grid {
+    width:980px;
+    float:left;
+}
+.box {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width:455px;
+    float:left;
+    height:250px;
+/*    border: 1px solid black;*/
+}
+
+.myimg {
+    max-width: 300px;
+    max-height: 220px;
+    border: 10px solid white;
+/*    display: block;
+    margin: 0 auto;
+    top: 0;
+    bottom: 0;
+    vertical-align: middle;*/
+}

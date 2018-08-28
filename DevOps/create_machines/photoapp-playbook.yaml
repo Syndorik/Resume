@@ -1,0 +1,44 @@
+---
+
+- hosts: mongo
+
+  roles:
+    - { role: vanoise.mongo-elu504, become: true }
+  vars:
+    mongodb_login_host: 192.168.2.132
+    mongodb_net_bindip: 0.0.0.0
+    mongodb_pymongo_from_pip: true
+    mongodb_security_authorization: "enabled"
+
+    mongodb_user_admin_name: charles
+    mongodb_user_admin_password: berti
+
+    mongodb_root_admin_name: alexandre
+    mongodb_root_admin_password: allani
+
+    mongodb_keyfile_content: >
+      QRXDezDXmpJHKXYShpbH+rMC23E/EiZlr5XPjG+Hfy9RoHaLQOFShLwTSWaGwtfT
+      9JJ+iUvFKYt77ZdaS/NkpM60mQgJJvCAYy6y2UUmzELy/9pHKv0pUks8OzlyhY/A
+      5+tXUMth0+KKZIqMtYDXNYktBYxo8uAqeOqs6ttOPlHO03NUEBKugs8NmcrU8dHm
+      yyygD7VYAbeVq2901quv9/UBdgwVu6ncXiqISmYVPa4z3umeUydza8seHsKEHs5/
+      IvqRbjnfCDWamCmxE2GCojkUsNGgEfgUTLhbET7EZjxfCzNCymwnM8RKAVxSxyFr
+      nwEK+NG7e85aBW9Oma2thmJLLipsoFXDC3gAovORQHqAkimGjjawYylEcJRi7RrG
+      qos8KfCGoyt6Lo91bN21bebPSBCm/Skw2xpLbOMTHWt3bnRV7zgM60o/XeUfeBlW
+      Dee94+N7rgkAYOzdLbGmoOBUptAunpcHxvZn7wYoDou5X9xkQi0VcW4syRHbouZK
+      9MDMEYdxoawhYmV5MELk/PhYO1ZVs2wW63LxQnMreidaDf3Sow0Tt0FQbg24BLCN
+      xEEXB/UP0bP8wOzdV8MS38DPIvLZQ3z3o59rUXC3HqO/Pn7eC60xblJMk47pMN6u
+      +mYnxO48fdgeEo4339nbAdKrlBxTF9ZBkoRZkdTO/4oG+AWrJrIKKSNzC2F0Kdh/
+      JOzFN08gCCX0fEux041Lvjsu35Po9TxH/cIfefepco/Rzyu/DPTWTjklXmQvWP5J
+      t8L6rijm7RoPoXDN5OR2a3ORRLTLtDMrt6lK7iz6JNgw8GA6AYauV18mON/8uzKp
+      le+9mmNyTexdHGZE9PgypozxTnqpbmHmowAQRADWykfjsU+oZkKJLp6htjf0yPqE
+      vP4B44YU7E2Mb8oIUAofL8tZn/6kKQqyihyY5UFTNeQ4+7v4Xvxhx5s5HTn4vAkW
+      au2GgIC8mB2Zd3uXn50Ec6c5AvSe
+
+
+    mongodb_security_keyfile: /etc/mongodb-keyfile
+    mongodb_replication_replset: therep
+    # mongodb_replication_params should be configured on each replica set node
+    mongodb_replication_params:
+      - { host_name: 192.168.2.132, host_port: "{{ mongodb_net_port }}", host_type: replica }
+      - { host_name: 192.168.2.133, host_port: "{{ mongodb_net_port }}", host_type: replica }
+      - { host_name: 192.168.2.134, host_port: "{{ mongodb_net_port }}", host_type: replica }

@@ -1,0 +1,19 @@
+{% extends "base_main.html" %}
+{% block title %}Index{% endblock %}
+{% block head %}
+{{ super() }}
+<style type="text/css">
+  .important { color: #336699; }
+</style>
+{% endblock %}
+{% block principal %}
+<div class="grid">
+<script>
+$(function() {
+{% for id in ids %}
+$('#principal').append('<div class="box"> <img class="myimg" src="{{ image_url }}photo/{{ id }}"> </div>');
+{% endfor %}
+});
+</script>
+</div>
+{% endblock %}

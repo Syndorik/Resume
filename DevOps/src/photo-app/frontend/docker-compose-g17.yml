@@ -1,0 +1,29 @@
+version: '3.0'
+services:
+  frontend:
+    image: registry.cloud.rennes.enst-bretagne.fr:5000/myfrontend_g17
+    build: .
+    ports:
+     - "8017:8017"
+
+  clientphoto:
+    image: registry.cloud.rennes.enst-bretagne.fr:5000/clientphoto_g17
+    container_name: clientphoto
+    build:
+      context: ./clientphoto
+      dockerfile: clientphotodockerfile
+    ports:
+      - "8081:8081"
+    extra_hosts:
+      - "mongodb_clientphoto:192.168.2.132"
+
+  photographer:
+    image: registry.cloud.rennes.enst-bretagne.fr:5000/myphotographer_g17
+    container_name: photographer
+    build:
+      context: ./photographer
+      dockerfile: photographerdockerfile
+    ports:
+      - "8080:8080"
+    extra_hosts:
+      - "mongodb_photographr:192.168.2.132"

@@ -1,0 +1,19 @@
+- hosts : web
+  tasks :
+   - name: Install Nginx
+     apt:
+       name: nginx
+       state: installed
+       update_cache: true
+   - name: Creates directory
+     file:
+       path: /nginx/html
+       state: directory
+   - name: Copy files
+     copy:
+       src: "{{ item }}"
+       dest: /nginx/html
+     with_items :
+       - files1.html
+       - files2.html
+       - files3.html

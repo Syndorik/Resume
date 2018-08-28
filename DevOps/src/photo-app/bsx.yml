@@ -1,0 +1,58 @@
+title:
+  name: title
+  description: title of the photo
+  in: query
+  type: string
+  x-example: "AlexandreSousLaDouche"
+  minLength: 1
+  maxLength: 100
+  required: false
+  allowEmptyValue: true
+  default: ""
+comments:
+  name: comments
+  description: comments of the photo
+  in: query
+  type: string
+  x-example: "Quel bel homme !"
+  minLength: 1
+  maxLength: 255
+  required: false
+  allowEmptyValue: true
+  default: ""
+location:
+  name: location
+  description: location of the photo
+  in: query
+  type: string
+  x-example: "complètement perdu!!"
+  minLength: 1
+  maxLength: 100
+  required: false
+  allowEmptyValue: true
+  default: ""
+tags:
+  name : tags
+  in: query
+  type: array
+  items:
+    type: string
+  x-example: ["Vaow"]
+  description: tags...
+  required: false
+  allowEmptyValue: true
+author:
+  name: author
+  in: path
+  type: string
+  required : true
+  pattern: "^[a-zA-Z0-9-]+$"
+  x-example: 'ksix13'
+#en cours de construction
+photo:
+  name: photo
+  in: query
+  type: ??
+  required : true
+  pattern: ??
+  x-example: ??

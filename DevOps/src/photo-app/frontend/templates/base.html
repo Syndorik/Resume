@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  {% block head %}
+  <script src="{{ url_for('static', filename='js/addInput.js') }}"></script>
+  <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/style.css') }}"/>
+
+  <title>{% block title %}{% endblock %} - My Webpage</title>
+  {% endblock %}
+</head>
+<body class="centered-wrapper">
+  <div id="content">{% block content %}{% endblock %}</div>
+  <div id="footer">
+    {% block footer %}
+    {% endblock %}
+  </div>
+</body>
+</html>
