@@ -1,6 +1,7 @@
 # Project 1 -- WeatherApp
 This is a "simple" weather application. Objectives of this project : learn about Threads/AsyncTask. Connect to a distant base. Use activities and widgets. (Android Studio / Java)
 
+Project done in KAIST (Daejeon South Korea)
 ## Files & Folders
 **MyWeatherApp**
 Contains the Source code of the application. You can open it with Android Studio.
