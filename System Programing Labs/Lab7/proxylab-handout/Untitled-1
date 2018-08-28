@@ -1,0 +1,344 @@
+#include <stdio.h>
+#include "csapp.h"
+
+/* Recommended max cache and object sizes */
+#define MAX_CACHE_SIZE 1049000
+#define MAX_OBJECT_SIZE 102400
+
+typedef struct {
+    char* host;
+    char* user_agent;
+    char* type;
+    char* connection;
+    char* proxy_connection;
+    char* path;
+    char* portnumber;
+
+} headers_t;
+
+/* You won't lose style points for including this long line in your code */
+static char *user_agent_hdr = "User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:10.0.3) Gecko/20120305 Firefox/10.0.3\r\n";
+static char *usr_agent_curl ="curl/7.47.0\r\n";
+static char *accept_curl = "*/*\r\n";
+static char *accept_hdr = "Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8\r\n";
+static char *accept_encoding_hdr = "Accept-Encoding: gzip, deflate\r\n";
+static const char *GET = "GET";
+int VERBOSE=0;
+
+void onRequest(int fd);
+void errorproxy(int fd, char* error, char* msg);
+void headers(int fd, char* url, headers_t* head);
+int parse_url(char* url, headers_t* headers);
+void myfree(headers_t* heads);
+
+
+
+
+
+int main(int argc, char **argv)
+{
+    char* port;
+    int listenfd;
+    int* connfd;
+    struct sockaddr_in addrofclient;
+    socklen_t len_addrofclient = sizeof(struct sockaddr_in);
+
+
+    /*
+        Verificatio to set a Verbose flag (debug) and to see if we have enough arguments
+    */
+    if(argc == 3 && strcmp(argv[2],"v")){
+        VERBOSE = 1;
+    }
+    if(VERBOSE){
+        printf("cmd : %s\n",argv[0]);
+        printf("port : %s\n", argv[1]);
+    } 
+
+
+    if(argc<2){
+        fprintf(stderr, "I need a port to work :(\n");
+        exit(0);
+    }
+    
+    port = argv[1];
+
+
+    listenfd = Open_listenfd(port);
+    while(1){
+        connfd = Malloc(sizeof(int));
+        *connfd = Accept(listenfd,(SA *) &addrofclient, &len_addrofclient);
+        if(VERBOSE){
+            printf("Connection succeed\n");
+        }
+        onRequest(*connfd);
+    }
+    
+
+
+    printf("%s", user_agent_hdr);
+
+
+
+
+    return 0;
+}
+
+/*
+    This function handle the REQUESTS (GET). We know from csapp.h that MAXLINE = 8192
+*/
+
+void onRequest(int fd){
+    char buf[MAXLINE];
+    char request_type[MAXLINE];
+    char url[MAXLINE]; 
+    char http1[MAXLINE];
+    char buf_resp[MAXLINE];
+    rio_t rio_user, rio_resp;
+    headers_t* heads = malloc(sizeof(heads));
+    int fd_resp;
+
+    
+    /*Initialise fd for request with the rio package*/
+    rio_readinitb(&rio_user, fd);
+    rio_readlineb(&rio_user,buf,MAXLINE);
+
+    /*If the request is NULL, then we're not handling it*/
+    if(!strcmp(buf,"")){
+        if(VERBOSE){
+            errorproxy(fd,"Not Valid","Buff empty");
+        }
+        return;
+    }
+
+    /*If the request is not NULL but with a bad requestype (or not handled), then we're not handling it*/
+    sscanf(buf, "%s %s %s", request_type, url, http1 );
+    
+    if(VERBOSE){
+        printf("Buf : %s\n",buf);
+        printf("Request type : %s\nURL : %s\nHTTP : %s\n\n", request_type, url, http1);
+        
+    }
+
+
+    if(strcmp(GET, request_type)){
+        if(VERBOSE)
+            printf("%s is not implemented", request_type);
+        return;
+    }
+
+    headers(fd,url,heads);
+
+    if(VERBOSE){
+        printf("type : %s\n",heads->type);
+        printf("host : %s\n", heads->host);
+        printf("Port : %s\n", heads->portnumber);
+        printf("Path : %s\n",heads->path);
+        printf("Connection : %s\n", heads->connection);
+        printf("Co proxy : %s\n", heads->proxy_connection);
+        printf("User agent : %s\n", heads->user_agent);
+    }
+
+    fd_resp = Open_clientfd(heads->host, heads->portnumber);
+    rio_readinitb(&rio_resp,fd_resp);
+
+    /*Create and send request*/
+    sprintf(buf_resp, "GET %s HTTP/1.0\r\n", heads->path);
+    rio_writen(fd_resp, buf_resp, strlen(buf_resp));
+    sprintf(buf_resp, "Host: %s\r\n", heads->host);
+    rio_writen(fd_resp,buf_resp, strlen(buf_resp));
+    rio_writen(fd_resp,heads->user_agent, strlen(heads->user_agent));
+    rio_writen(fd_resp,accept_hdr, strlen(accept_hdr));
+    rio_writen(fd_resp, accept_encoding_hdr, strlen(accept_encoding_hdr));
+    rio_writen(fd_resp, heads->connection, strlen(heads->connection));
+    rio_writen(fd_resp, heads->proxy_connection, strlen(heads->proxy_connection));
+
+    /*Return the response of the client*/
+    int n;
+    int number;
+    char tosend[MAX_OBJECT_SIZE];
+    strcpy(tosend, "");
+    while ((n = rio_readlineb(&rio_resp, buf_resp, MAXLINE)) != 0) {
+        if(VERBOSE){
+            printf("Response transmitted %d\n",number);
+        }
+        number+=n;
+        if(number<= MAX_OBJECT_SIZE){
+            strcat(tosend, buf_resp);
+        }
+        
+    }
+    
+    
+
+   // myfree(heads);
+    if(VERBOSE){
+        printf("Connection closed\n");
+        printf("Component freed\n");
+    }
+    Close(fd);
+    
+
+
+
+
+
+}
+
+
+void myfree(headers_t* heads){
+    free(heads->connection);
+    free(heads->host);
+    free(heads->path);
+    free(heads->portnumber);
+    free(heads->proxy_connection);
+    free(heads->type);
+}
+
+
+// Inspired on https://stackoverflow.com/questions/6285137/html-page-with-a-c-server and https://stackoverflow.com/questions/22077802/simple-c-example-of-doing-an-http-post-and-consuming-the-response
+void errorproxy(int fd, char* error, char* msg){
+    char buf[MAXLINE], body[MAXBUF];
+
+    /*Response to an error so that it is visible on Internet*/
+    sprintf(body, "<html>\n\t<title>Sorry bad request</title>\n");
+    sprintf(body, "\t%s%s: %s\n", body, error, msg);
+    sprintf(body,"%s </html>\r\n",body);
+    sprintf(buf, "HTTP/1.0 %s %s\r\n", error, msg);
+    rio_writen(fd, buf, strlen(buf));
+    sprintf(buf, "Content-type: text/html\r\n");
+    rio_writen(fd, buf, strlen(buf));
+    sprintf(buf, "Content-length: %d\r\n\r\n", (int)strlen(body));
+    rio_writen(fd, buf, strlen(buf));
+    rio_writen(fd, body, strlen(body));
+
+}
+/*
+    Here we retrieve some informations about the header
+    Especially we retrieve the hostname, the port and the path to the request
+    If there is an error in the specified path, it returns 0
+    If there isn't it returns 1
+*/
+int parse_url(char* url, headers_t* headers){
+    const char* tmp;
+    const char* tmp2;
+    const char* ptr_url;
+    char* type;
+    char* host;
+    char* port_number;
+    char* path;
+    int len;
+
+    ptr_url = url;
+
+    tmp = strstr(url, ":");
+    if(tmp==NULL){
+        return 0;
+    }
+
+
+    /*Parse type*/
+    len =  tmp-ptr_url;
+    type = Malloc(sizeof(char)*(len+1));
+    strncpy(type,ptr_url,len);
+    type[len] = '\0';
+    if(strcmp("http",type)!=0){
+        if(VERBOSE){
+            printf("Error : type %s isn't valid\n",type);
+        }
+        return 0;
+    }
+
+    tmp++;
+    ptr_url = tmp;
+    /* If there is no // after the http, there's an error*/
+    if(ptr_url[0] != '/' && ptr_url[1] !='/'){
+        if(VERBOSE){
+            printf("Miss of //");
+        }
+        return 0;
+    }
+    tmp += 2;
+    ptr_url = tmp;
+
+    /*Parse Host, Here we can have a port or no port specified*/
+    tmp2 = strstr(ptr_url, ":");
+    tmp = strstr(ptr_url, "/");
+
+    if(tmp2 == NULL){
+        //No port specified
+        port_number = Malloc(sizeof(char)*(3));
+        port_number = "80\0";
+
+        len = tmp-ptr_url;
+        host = Malloc(sizeof(char)*(len+1));
+        strncpy(host,ptr_url,len);
+        host[len] = '\0';
+    }
+    else{
+        if(tmp2<tmp){
+            len = tmp2-ptr_url;
+            host = Malloc(sizeof(char)*(len+1));
+            strncpy(host,ptr_url,len);
+            host[len] = '\0';
+
+            len = tmp-tmp2-1;
+            port_number = Malloc(sizeof(char)*(len+1));
+            strncpy(port_number,tmp2+1,len);
+            port_number[len] = '\0';
+            ptr_url = tmp;
+        }
+        else{
+            len = tmp-ptr_url;
+            host = Malloc(sizeof(char)*(len+1));
+            strncpy(host,ptr_url,len);
+            host[len] = '\0';
+
+            port_number = Malloc(sizeof(char)*(3));
+            port_number = "80\0";
+            ptr_url = tmp;
+        }
+    }
+
+
+    /*Retrieving the path*/
+
+    while(strcmp(tmp,"")){
+        tmp++;
+    }
+    len = tmp - ptr_url;
+    path = Malloc(sizeof(char)*(len+1));
+    strncpy(path, ptr_url, len);
+    path[len] = '\0';
+
+
+    headers->type = type;
+    headers->host = host;
+    headers->portnumber = port_number;
+    headers->path = path;
+
+
+
+
+    return 1;
+
+} 
+
+/*
+    This function return the header of a request
+*/
+void headers(int fd,char* url, headers_t* head){
+    
+    char* c = Malloc(sizeof(char)*20);
+    c = "Connection: close\r\n\0";
+
+    head->connection = c;
+    head->proxy_connection = c;
+
+    head->user_agent = user_agent_hdr;
+    if(!parse_url(url,head)){
+        errorproxy(fd,"URL isn't valid","Check the URL");
+    }
+
+
+}

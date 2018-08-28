@@ -1,0 +1,10 @@
+{
+    "files.associations": {
+        "type_traits": "c",
+        "proxy.c": "cpp",
+        "cache.h": "c",
+        "stdio.h": "c",
+        "csapp.h": "c",
+        "limits": "cpp"
+    }
+}
