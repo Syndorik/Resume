@@ -1,7 +1,7 @@
 # Lab5
 In this lab I had to create a light version of the Linux shell. I started almost from scratch, only the function to parse the command line was written. I had mostly to deal with processes (fork) and signals between them.
 
-I worked only on the **tsh.c** file (/Lab4/shlab-handout/tsh.c)
+I worked only on the **tsh.c** file (/Lab5/shlab-handout/tsh.c)
 
 Project done in KAIST (Daejeon, South Korea)
 
