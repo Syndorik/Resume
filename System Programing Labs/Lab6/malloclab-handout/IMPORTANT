@@ -1,4 +1,0 @@
-gcc -m32 -g mdriver.c memlib.c mm.c fcyc.c clock.c fsecs.c ftimer.c -o mdriver
-
-
-gdb list : to see where we are

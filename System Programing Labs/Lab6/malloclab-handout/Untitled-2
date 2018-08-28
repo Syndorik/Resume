@@ -1,8 +1,0 @@
-GET SIZE
-p ((*(unsigned int*) ((char *) (0xf6a02018-4))) & 0x7)
-
-NEXT POINTER
-((char *) (0xf6a02018) + ((*(unsigned int*) ((char *) (0xf6a02018-4))) & ~0x7))
-
-GET SIZE
-p ((*(unsigned int*) ((char *) (0xf6a02018-4))) & 0x1)

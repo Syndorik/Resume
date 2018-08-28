@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">MyWeatherApp</string>
+    <string name="default_location">Fetch Loc</string>
+    <string name="default_temp">NA</string>
+    <string name="default_weather">NA</string>
+    <string name="default_max_min">NA/NA</string>
+    <string name="default_rainfall">NA</string>
+    <string name="get_weather">Change City</string>
+    <string name="default_query">Enter city name</string>
+
+    <string name="NA">NA</string>
+    <string name="NA_NA">NA/NA</string>
+    <string name="hourly">Hourly</string>
+
+</resources>
