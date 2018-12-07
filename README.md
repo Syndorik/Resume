@@ -6,6 +6,9 @@ This is the github presenting all the project I have done. Each subfolder have a
 
 ### Projects in IMT Atlantique -former Télécom Bretagne- (Brest, France)
 
+**Datamining PUBG**
+This folder contains my datamining project related to the Kaggle Challenge on PUBG. PUBG is a game where 100 people drop on a map. The goal of the game is to be the only survivor by killing everyone else. The purpose of the project is to predict the rank of each player during a game based on their statistics. (Python/Scikit-Learn)
+
 **DevOps**
 Contains the application that was deployed on OpenStack using docker. Contains also some scripts (Ansible and heat templates), that helped the deployment. (Some parts are in French) **(Docker / OpenStack)**
 
