@@ -18,6 +18,8 @@ This folder contains my part of the source code for the Pixar typed lamp. Especi
 **Pyrat** 
 This projects is revolving around the travelling salesman problem. I had a snake on a randomly generated maze. The snake had to retrieve all the cheese in it. And I had a pre-processing of 3 second. Each file in this folder is an algorithm that I made to solve this problem the fatest way possible. (Python)
 
+**Statistics**
+This project was about making a survey on film culture and analyse this survey with inferential statistics. You will find in this folders, the results of the survey, the source code and a report about the project. (Project in French)
 
 
 ### Projects in KAIST  (Daejeon, South Korea)
