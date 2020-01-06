@@ -1,4 +1,4 @@
-# Neural Network
+# Maze Traversal
 Using PyTorch, I developed a deepQ learning Neural Network with some optimization to make an agent learn the best path to take to go from point A to point B.
 The constraints were:
 - 10 minutes of training

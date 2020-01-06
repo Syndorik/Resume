@@ -1,4 +1,4 @@
-# Neural Network
+# Grid World
 Understanding of Markov Decision Process and basics of Reinforcement learning in a Grid World.
 With this project, I learned the underlying maths of Reinforcement learning and had the chance to code the main algorithms : Value Iteration, Policy Iteration, Tabular Q-learning ...
 
