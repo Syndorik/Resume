@@ -15,6 +15,8 @@ Project done in Imperial
 **lib** : Contains the libraries created for this project
 
 ## Files
+**coursework_nn.pdf** : specifications of the coursework
+
 ***.h5 and *.hdf5 and *.pickle** : final models according to each part of the project
 
 **nn_lib.py** : Neural Network framework

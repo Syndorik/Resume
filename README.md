@@ -4,7 +4,7 @@ This is the github presenting all the project I have done. Each subfolder have a
 
 ## List of subdirectories
 
-### Projects in Imperial College of London inside imperial directory
+### Projects in Imperial College of London (inside imperial directory)
 
 **maths_for_ml**
 Various courseworks including the development of:
@@ -48,7 +48,7 @@ Then we used TensorFlow to solve a classification task in insurance pricing.
 
 Finally using TensorFlow again, we created another insurance pricing model using real-world data. Our model was competing against models of other classmates. The purpose was to give the best pricing for each individual according to their risk. Each individual then chooses automatically the lower price among those proposed. Models were then ranked according to the profit they made.
 
-### Projects in IMT Atlantique -former Télécom Bretagne- (Brest, France) inside IMT_atlantique directory
+### Projects in IMT Atlantique -former Télécom Bretagne- (Brest, France) (inside IMT_atlantique directory)
 
 **datamining_PUBG**
 This folder contains my datamining project related to the Kaggle Challenge on PUBG. PUBG is a game where 100 people drop on a map. The goal of the game is to be the only survivor by killing everyone else. The purpose of the project is to predict the rank of each player during a game based on their statistics. (Python/Scikit-Learn)
@@ -69,7 +69,7 @@ This projects is revolving around the travelling salesman problem. I had a snake
 This project was about making a survey on film culture and analyse this survey with inferential statistics. You will find in this folders, the results of the survey, the source code and a report about the project. (Project in French)
 
 
-### Projects in KAIST  (Daejeon, South Korea) inside KAIST directory
+### Projects in KAIST  (Daejeon, South Korea) (inside KAIST directory)
 
 **mobile_computing**
  Contains 4 different project  :
