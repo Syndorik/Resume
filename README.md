@@ -6,6 +6,14 @@ This is the github presenting all the project I have done. Each subfolder have a
 
 ### Projects in Imperial College of London inside imperial directory
 
+**maths_for_ml**
+Various courseworks including the development of:
+- Linear Model algorithm
+- Bayesian Model algorithm
+- LDA
+- PCA, KPCA
+- SVM
+
 **reinforcement_leraning/gridworld**
 Understanding of Markov Decision Process and basics of Reinforcement learning in a Grid World.
 With this project, I learned the underlying maths of Reinforcement learning and had the chance to code the main algorithms : Value Iteration, Policy Iteration, Tabular Q-learning ...
