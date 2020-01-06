@@ -19,6 +19,27 @@ The constraints were:
 
 My agent was able to solve easy to medium-difficult mazes.
 
+**machine_learning_basics/decision_tree**
+In this group project, I developed a Decision Tree framework in Python. This framework includes:
+- single-threaded decision tree
+- a parallelized version of a decision
+- testing methods (Cross-Validation, confusion Matrix ...)
+- pruning of decision tree
+- Graphic representation of a decision tree
+
+The framework was tested on a real-life problem: predict the localization of a person in a flat, based on the strength of each wifi access points.
+The framework gave expected results.
+
+**machine_learning_basics/neural_network**
+In this group project, I developed a Neural Network Framework. It includes:
+- Linear layer
+- Activation functions layer (sigmoid ...)
+- Evaluation layers (Binary Cross entropy ...)
+
+Then we used TensorFlow to solve a classification task in insurance pricing.
+
+Finally using TensorFlow again, we created another insurance pricing model using real-world data. Our model was competing against models of other classmates. The purpose was to give the best pricing for each individual according to their risk. Each individual then chooses automatically the lower price among those proposed. Models were then ranked according to the profit they made.
+
 ### Projects in IMT Atlantique -former Télécom Bretagne- (Brest, France) inside IMT_atlantique directory
 
 **datamining_PUBG**

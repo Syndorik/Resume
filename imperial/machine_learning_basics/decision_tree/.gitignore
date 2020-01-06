@@ -1,0 +1,5 @@
+.ipynb_checkpoints/
+*.swp
+venv
+.idea
+__pycache__
