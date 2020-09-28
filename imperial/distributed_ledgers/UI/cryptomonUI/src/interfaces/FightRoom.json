@@ -1,0 +1,502 @@
+[
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "_fighter1",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_fighter2",
+                "type": "uint256"
+            },
+            {
+                "internalType": "address",
+                "name": "cryptAdress",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "constructor"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "int256",
+                "name": "a",
+                "type": "int256"
+            },
+            {
+                "internalType": "int256",
+                "name": "b",
+                "type": "int256"
+            }
+        ],
+        "name": "abs",
+        "outputs": [
+            {
+                "internalType": "int256",
+                "name": "",
+                "type": "int256"
+            }
+        ],
+        "stateMutability": "pure",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "actionAttack",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "actionDefend",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "cryptomons",
+        "outputs": [
+            {
+                "internalType": "contract Cryptomons",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "id",
+                "type": "uint256"
+            }
+        ],
+        "name": "getAlterations",
+        "outputs": [
+            {
+                "internalType": "bool",
+                "name": "isInFire",
+                "type": "bool"
+            },
+            {
+                "internalType": "uint256",
+                "name": "turnFireRemaing",
+                "type": "uint256"
+            },
+            {
+                "internalType": "bool",
+                "name": "isPoisoned",
+                "type": "bool"
+            },
+            {
+                "internalType": "uint256",
+                "name": "turnPoisonRemaining",
+                "type": "uint256"
+            },
+            {
+                "internalType": "bool",
+                "name": "isInSoaked",
+                "type": "bool"
+            },
+            {
+                "internalType": "uint256",
+                "name": "turnSoakedRemaining",
+                "type": "uint256"
+            },
+            {
+                "internalType": "bool",
+                "name": "isInDef",
+                "type": "bool"
+            },
+            {
+                "internalType": "uint256",
+                "name": "turnDefRemaining",
+                "type": "uint256"
+            },
+            {
+                "internalType": "bool",
+                "name": "isInAir",
+                "type": "bool"
+            },
+            {
+                "internalType": "uint256",
+                "name": "turnAirRemaining",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "id",
+                "type": "uint256"
+            }
+        ],
+        "name": "getCombatCard",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "_id",
+                "type": "uint256"
+            },
+            {
+                "internalType": "address payable",
+                "name": "owner",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "otherFight",
+                "type": "uint256"
+            },
+            {
+                "internalType": "bool",
+                "name": "waiting",
+                "type": "bool"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "id",
+                "type": "uint256"
+            }
+        ],
+        "name": "getCriticUp",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "id",
+                "type": "uint256"
+            }
+        ],
+        "name": "getDodgeChanceUp",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "getEnded",
+        "outputs": [
+            {
+                "internalType": "bool",
+                "name": "_hasEnded",
+                "type": "bool"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "getExpired",
+        "outputs": [
+            {
+                "internalType": "bool",
+                "name": "_hasExpired",
+                "type": "bool"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "attackerID",
+                "type": "uint256"
+            }
+        ],
+        "name": "getFireTick",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "id",
+                "type": "uint256"
+            }
+        ],
+        "name": "getNumberTurnAir",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "id",
+                "type": "uint256"
+            }
+        ],
+        "name": "getNumberTurnDef",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "id",
+                "type": "uint256"
+            }
+        ],
+        "name": "getNumberTurnFire",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "id",
+                "type": "uint256"
+            }
+        ],
+        "name": "getNumberTurnPoison",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "id",
+                "type": "uint256"
+            }
+        ],
+        "name": "getNumberTurnSoaked",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "attackerID",
+                "type": "uint256"
+            }
+        ],
+        "name": "getPoisonTick",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "getPossibleGain",
+        "outputs": [
+            {
+                "internalType": "uint256[4]",
+                "name": "pbg",
+                "type": "uint256[4]"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "id",
+                "type": "uint256"
+            }
+        ],
+        "name": "getPropertiesCard",
+        "outputs": [
+            {
+                "internalType": "enum myLib.Species",
+                "name": "species",
+                "type": "uint8"
+            },
+            {
+                "internalType": "enum myLib.Types",
+                "name": "typ",
+                "type": "uint8"
+            },
+            {
+                "internalType": "int256",
+                "name": "hp",
+                "type": "int256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "attack",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "lvl",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "def",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "bonusCritic",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "dodgeChance",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "maxhp",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "manager",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "a",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "b",
+                "type": "uint256"
+            }
+        ],
+        "name": "max_f",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "pure",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "a",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "b",
+                "type": "uint256"
+            }
+        ],
+        "name": "min_f",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "pure",
+        "type": "function"
+    }
+]
